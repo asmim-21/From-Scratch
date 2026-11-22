@@ -1,0 +1,10 @@
+# Everything the Python content build needs.
+markdown-it-py>=3,<5
+pillow>=11,<13
+pydantic>=2.12,<3
+python-frontmatter>=1.1,<2
+PyYAML>=6,<7
+
+# Only used for checking the code (tests and linting).
+pytest>=8,<10
+ruff>=0.9,<1

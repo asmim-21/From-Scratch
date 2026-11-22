@@ -1,0 +1,471 @@
+/* ---------- The benchtop ----------
+   The photo is public/images/table.jpg (or .png, .webp), set as --table in
+   main.tsx. If there isn't one, the cream marble underneath shows instead. The edges fall into a soft shadow. */
+.table {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #ede6dc;
+  background-image:
+    radial-gradient(ellipse 110% 105% at 50% 48%, rgba(60, 35, 25, 0) 52%, rgba(60, 35, 25, 0.34) 100%),
+    var(--table, none),
+    radial-gradient(ellipse 60% 50% at 12% 8%, rgba(255, 252, 244, 0.95), rgba(255, 252, 244, 0) 70%),
+    linear-gradient(
+      112deg,
+      rgba(190, 172, 160, 0) 38%,
+      rgba(190, 172, 160, 0.28) 40%,
+      rgba(190, 172, 160, 0) 43%
+    ),
+    linear-gradient(
+      127deg,
+      rgba(200, 176, 160, 0) 61%,
+      rgba(200, 176, 160, 0.24) 62%,
+      rgba(200, 176, 160, 0) 66%
+    ),
+    linear-gradient(140deg, #f7f1e7, #ebe2d7 55%, #f2d9d6);
+  background-size: cover;
+  background-position: center;
+}
+
+.table__book {
+  position: absolute;
+  inset: 0;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 24px;
+  background: var(--card);
+  font-family: var(--hand);
+  font-size: 22px;
+}
+
+/* ---------- Desktop layout ---------- */
+.desk {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: clamp(14px, 4.5vh, 48px);
+}
+
+.desk__bar {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 12px 24px 2px;
+  position: relative;
+  z-index: 6;
+}
+
+.desk__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Contents button on phones */
+.slip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 3px;
+  background: var(--title);
+  color: #fffaf3;
+  box-shadow: 0 1px 4px rgba(70, 40, 30, 0.25);
+  font-family: var(--ui);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/* ---------- The book ---------- */
+.book {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.book--animated {
+  transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.3, 1);
+}
+
+/*
+ * The book's shadow on the benchtop, cast by the pages themselves (including a
+ * page mid-turn), so it follows the turn frame by frame. Light comes from the
+ * top-left.
+ */
+.book,
+.phone__frame {
+  filter: drop-shadow(0 1px 1px rgba(70, 40, 30, 0.5)) drop-shadow(3px 6px 8px rgba(70, 40, 30, 0.3))
+    drop-shadow(8px 18px 26px rgba(70, 40, 30, 0.28));
+}
+
+.flip-book {
+  position: relative;
+}
+
+/* The hard cover, showing a little beyond the pages. Sizes are in em so they
+   scale with the book (1em is one design pixel). */
+.board {
+  position: absolute;
+  top: -7em;
+  bottom: -8em;
+  width: calc(50% + 11em);
+  background: url('/textures/cloth.webp'), var(--cover);
+  background-blend-mode: soft-light;
+  box-shadow:
+    inset 0 0 0 1px rgba(60, 20, 10, 0.18),
+    inset 0 2px 1px rgba(255, 230, 215, 0.25);
+}
+
+.board--left {
+  right: 50%;
+  border-radius: 5em 0 0 5em;
+}
+
+.board--right {
+  left: 50%;
+  border-radius: 0 5em 5em 0;
+}
+
+/* A closed book: the far board sits just under the near one */
+.book--front .board--right,
+.book--back .board--left {
+  width: 50%;
+  top: 2em;
+  bottom: -7em;
+}
+
+.book--front .board--right {
+  transform: translateX(5em);
+}
+
+.book--back .board--left {
+  transform: translateX(-5em);
+}
+
+/* The edges of all the other pages */
+.stack {
+  position: absolute;
+  top: 1.5em;
+  bottom: -2.5em;
+  background: repeating-linear-gradient(to right, #fbf4e8 0 1px, #dccdbb 1px 2px);
+  box-shadow: 0 0 2px rgba(60, 30, 20, 0.35);
+  transition: width 0.6s ease;
+}
+
+.stack--left {
+  right: 100%;
+}
+
+.stack--right {
+  left: 100%;
+}
+
+.book--front .stack--left,
+.book--back .stack--right {
+  display: none;
+}
+
+/* ---------- Chapter tabs ---------- */
+.tabs {
+  position: absolute;
+  top: 20em;
+  bottom: 20em;
+  left: calc(100% - 8em);
+  width: 44em;
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+}
+
+.tabs--left {
+  left: auto;
+  right: calc(100% - 8em);
+}
+
+.tab {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3em 0 3em 13em;
+  border-radius: 0 6em 6em 0;
+  text-decoration: none;
+  background-image: linear-gradient(to right, rgba(60, 30, 20, 0.28), rgba(255, 255, 255, 0.12) 40%);
+  box-shadow: inset 0 0 0 1px rgba(80, 40, 30, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.tabs--left .tab {
+  padding: 3em 13em 3em 0;
+  border-radius: 6em 0 0 6em;
+}
+
+.tab:hover,
+.tab:focus-visible,
+.tab--current {
+  transform: translateX(4em);
+}
+
+.tabs--left .tab:hover,
+.tabs--left .tab--current {
+  transform: translateX(-4em);
+}
+
+.tab__text {
+  font-family: var(--hand);
+  font-size: 13em;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+}
+
+/* ---------- Pages ---------- */
+
+/* One page, as positioned and folded by the page-flip library */
+.flip-page {
+  overflow: hidden;
+  background: var(--paper);
+}
+
+/* The front cover is stiff board. Seen from well above, so it swings open
+   without looming; and the library's blocky shadows for stiff pages are off. */
+.flip-book .stf__block {
+  perspective: 5200px;
+}
+
+.flip-book .stf__hardShadow,
+.flip-book .stf__hardInnerShadow {
+  display: none !important;
+}
+
+/* The invisible partner beside a closed cover: just benchtop showing through */
+.flip-page--blank {
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Our page design, scaled to the page's on-screen size */
+.flip-page__inner {
+  position: relative;
+  width: var(--pw);
+  height: var(--ph);
+  transform-origin: 0 0;
+}
+
+/* Where the pages bend down into the binding: a dark crease right at the
+   fold, then the paper curving back up into the light. */
+.gutter {
+  position: absolute;
+  top: 0;
+  width: 70px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gutter--left {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(70, 40, 28, 0.36) 0,
+    rgba(70, 40, 28, 0.18) 4px,
+    rgba(70, 40, 28, 0.08) 18px,
+    rgba(255, 250, 240, 0.06) 40px,
+    rgba(0, 0, 0, 0) 70px
+  );
+}
+
+.gutter--right {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(70, 40, 28, 0.4) 0,
+    rgba(70, 40, 28, 0.2) 4px,
+    rgba(70, 40, 28, 0.09) 18px,
+    rgba(255, 250, 240, 0.06) 40px,
+    rgba(0, 0, 0, 0) 70px
+  );
+}
+
+/* Open pages curve gently down at their outer edges */
+.page-curve {
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page-curve--left {
+  left: 0;
+  background: linear-gradient(to right, rgba(80, 45, 30, 0.08), rgba(80, 45, 30, 0));
+}
+
+.page-curve--right {
+  right: 0;
+  background: linear-gradient(to left, rgba(80, 45, 30, 0.06), rgba(80, 45, 30, 0));
+}
+
+/* The spine edge of a cover: shading where the cloth wraps round the binding,
+   and the pressed hinge a little way in. */
+.spine {
+  position: absolute;
+  top: 0;
+  width: 34px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spine--left {
+  left: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0) 22px,
+      rgba(50, 15, 8, 0.32) 25px,
+      rgba(255, 235, 220, 0.25) 28px,
+      rgba(0, 0, 0, 0) 32px
+    ),
+    linear-gradient(
+      to right,
+      rgba(50, 15, 8, 0.35),
+      rgba(255, 230, 215, 0.12) 9px,
+      rgba(50, 15, 8, 0.06) 22px
+    );
+}
+
+.spine--right {
+  right: 0;
+  background:
+    linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0) 22px,
+      rgba(50, 15, 8, 0.32) 25px,
+      rgba(255, 235, 220, 0.25) 28px,
+      rgba(0, 0, 0, 0) 32px
+    ),
+    linear-gradient(to left, rgba(50, 15, 8, 0.35), rgba(255, 230, 215, 0.12) 9px, rgba(50, 15, 8, 0.06) 22px);
+}
+
+/* Outer page edges: click or tap anywhere along them to turn */
+.edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 64px;
+  z-index: 3;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edge--left {
+  left: 0;
+}
+
+.edge--right {
+  right: 0;
+}
+
+/* A soft shadow along the edge on hover, like the page lifting */
+.edge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.edge--right::before {
+  background: linear-gradient(to left, rgba(70, 40, 28, 0.12), rgba(70, 40, 28, 0));
+}
+
+.edge--left::before {
+  background: linear-gradient(to right, rgba(70, 40, 28, 0.12), rgba(70, 40, 28, 0));
+}
+
+.edge:hover::before,
+.edge:focus-visible::before {
+  opacity: 1;
+}
+
+.edge:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Phones: a slimmer edge that stays inside the page margin */
+.flip-book--portrait .edge {
+  width: 40px;
+}
+
+/* ---------- Phone layout ---------- */
+.phone {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  /* Room at the bottom for the floating button */
+  padding: env(safe-area-inset-top) 18px calc(60px + env(safe-area-inset-bottom)) 14px;
+}
+
+.phone__bar {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phone__bar .slip {
+  min-height: 40px;
+}
+
+.phone__area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone__frame {
+  position: relative;
+}
+
+/* On phones the tabs are just slips of colour; the names are in the sheet */
+.phone .tabs {
+  top: 14px;
+  bottom: 14px;
+  left: calc(100% - 4px);
+  width: 16px;
+  gap: 4px;
+}
+
+.phone .tab {
+  padding: 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.phone .tab:hover,
+.phone .tab--current {
+  transform: translateX(3px);
+}
+
+.phone .tab__text {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge::before,
+  .tab,
+  .stack {
+    transition: none;
+  }
+}

@@ -1,0 +1,27 @@
+# Everything about the book itself: words, colours and web address.
+# Change the text between the quotes, save, and the site updates.
+
+title: "From Scratch"
+subtitle: "a little book of good things"
+author: "Asmi Mitra"   # shown at the bottom of the front cover
+
+# The handwritten note inside the front cover (up to 400 characters).
+dedication: "Good food is all the sweeter when shared with good friends. This little book is a collection of my favourite recipes, written by hand and made with love. I hope you enjoy them as much as I do."
+
+# The small line on the back cover.
+backCover: "made with butter, patience and a lot of washing up"
+
+# One or two sentences for search engines and link previews.
+description: "A handwritten kitchen notebook you can flip through, one recipe at a time."
+
+# Where the site lives. Used for link previews.
+# If you add a custom domain later (public/CNAME), that is used instead.
+url: "https://asmim-21.github.io/From-Scratch/"
+
+# Colours, as hex codes. Keep the quotes: without them YAML reads # as a comment.
+colors:
+  cover: "#b4604c"      # the cloth on the hardcover
+  foil: "#f6dfae"       # the stamped lettering on the cover
+  title: "#b5452c"      # recipe titles
+  ink: "#3a332e"        # handwriting
+  paper: "#fdf8ee"      # the pages

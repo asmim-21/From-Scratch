@@ -1,0 +1,127 @@
+/* Cook mode: big, plain and single-column */
+.cook {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow-y: auto;
+  background: url('/textures/paper.webp'), var(--paper);
+  background-blend-mode: multiply;
+}
+
+.cook__bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background: var(--paper);
+  border-bottom: 2px solid var(--blush);
+}
+
+.cook__bar .pill {
+  min-height: 44px;
+}
+
+.cook__sizes {
+  display: flex;
+  gap: 8px;
+}
+
+.cook__recipe {
+  max-width: 34em;
+  margin: 0 auto;
+  padding: 1em 20px calc(4em + env(safe-area-inset-bottom));
+  font-family: var(--hand);
+  line-height: 1.5;
+}
+
+.cook__recipe h1 {
+  font-family: var(--script);
+  font-size: 2.1em;
+  line-height: 1.1;
+  color: var(--title);
+  overflow-wrap: anywhere;
+}
+
+.cook__facts,
+.cook__awake {
+  margin-top: 0.4em;
+  color: var(--ink-soft);
+}
+
+.cook__awake {
+  margin-top: 2em;
+  text-align: center;
+}
+
+.cook .section-head {
+  height: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1.6em 0 0.3em;
+}
+
+.cook .section-head h3 {
+  font-size: 1.5em;
+  line-height: 1.25;
+
+  background: linear-gradient(
+    to top,
+    transparent 12%,
+    color-mix(in srgb, var(--blush) 62%, transparent) 12% 55%,
+    transparent 55%
+  );
+}
+
+.cook .section-head__note {
+  padding: 0;
+  font-size: 0.8em;
+}
+
+.cook__serves {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin-top: 0.8em;
+}
+
+.cook .stepper output {
+  min-width: 2em;
+}
+
+.cook .stepper button {
+  width: 44px;
+  height: 44px;
+  font-size: 24px;
+}
+
+.cook .subhead {
+  padding-top: 0.6em;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.cook .line,
+.cook .tick {
+  padding: 0.28em 0;
+}
+
+.cook .line__number {
+  flex-basis: 1.7em;
+  font-size: 1.1em;
+}
+
+.cook .line__bullet {
+  flex-basis: 1.4em;
+  font-size: 0.75em;
+}
+
+.cook .tick input {
+  flex-basis: 1.15em;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0.18em 0.6em 0 0;
+  background-size: 85%;
+}

@@ -1,0 +1,12 @@
+node_modules
+dist
+.venv
+__pycache__
+.pytest_cache
+.ruff_cache
+.DS_Store
+# Made by scripts/build_content.py from your recipes and photos
+src/generated
+public/photos
+# Downloads to unpack, not part of the site
+*.zip

@@ -1,0 +1,816 @@
+/* Pages are laid out at their design size (see src/book/plan.ts) and scaled.
+   Handwriting sits on a 26px line. Some heights here are known to plan.ts:
+   .page-heading (104px) and .continued (52px). */
+
+.page {
+  position: absolute;
+  inset: 0;
+  padding: var(--pad-top) var(--pad-inner) var(--pad-bottom) var(--pad-outer);
+  background: url('/textures/paper.webp'), var(--paper);
+  background-blend-mode: multiply;
+  color: var(--ink);
+  font-family: var(--hand);
+  font-size: 18px;
+  line-height: 26px;
+  overflow: hidden;
+}
+
+.flip-page__inner--right .page {
+  padding-left: var(--pad-inner);
+  padding-right: var(--pad-outer);
+}
+
+.page.lined::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--pad-top) + 26px) 0 calc(var(--pad-bottom) - 10px);
+  background: repeating-linear-gradient(to bottom, transparent 0 25px, var(--rule) 25px 26px);
+  pointer-events: none;
+}
+
+.page > * {
+  position: relative;
+}
+
+/* The folio and margin decorations are placed by hand */
+.page > .folio,
+.page > .margin-decor,
+.page > .cover__frame,
+.page > .divider__wash {
+  position: absolute;
+}
+
+.folio {
+  bottom: 22px;
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+.folio--left {
+  left: 34px;
+}
+
+.folio--right,
+.folio--single {
+  right: 34px;
+}
+
+/* ---------- Text (also measured, off-screen) ---------- */
+.measure {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  visibility: hidden;
+  font-family: var(--hand);
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.measure__item {
+  display: flow-root;
+}
+
+.line,
+.tick {
+  overflow-wrap: anywhere;
+  margin-left: calc(var(--depth, 0) * 20px);
+}
+
+.line--step,
+.line--bullet,
+.tick {
+  display: flex;
+}
+
+.line--step > :last-child,
+.line--bullet > :last-child {
+  min-width: 0;
+}
+
+.line__number {
+  flex: 0 0 30px;
+  color: var(--title);
+  font-size: 20px;
+}
+
+.line__bullet {
+  flex: 0 0 24px;
+  color: var(--title);
+  font-size: 13px;
+}
+
+.line--empty {
+  padding: 8px 0;
+  color: var(--ink-soft);
+}
+
+.tick {
+  width: fit-content;
+  max-width: calc(100% - var(--depth, 0) * 20px);
+  cursor: pointer;
+}
+
+.tick input {
+  appearance: none;
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+  margin: 6px 11px 0 0;
+  border: 1.5px solid #a8604f;
+  border-radius: 4px 3px 5px 3px;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.tick input:checked {
+  background: var(--blush)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3 8.500 3.500 4L13.500 3' fill='none' stroke='%237c2c1b' stroke-width='2.400' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 13px no-repeat;
+}
+
+.tick input:checked + .tick__text {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: #c98a7c;
+}
+
+.tick__text {
+  min-width: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  height: 52px;
+  padding-top: 14px;
+}
+
+.section-head h3 {
+  min-width: 0;
+  font-family: var(--caps);
+  font-weight: 700;
+  font-size: 31px;
+  line-height: 36px;
+  letter-spacing: 0.03em;
+  color: var(--title);
+  white-space: nowrap;
+}
+
+/* A strip of washi behind the words */
+.section-head h3 {
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 14px 0 8px;
+  margin-left: -8px;
+  background: linear-gradient(
+    to top,
+    transparent 4px,
+    color-mix(in srgb, var(--blush) 62%, transparent) 4px 19px,
+    transparent 19px
+  );
+}
+
+.section-head__note {
+  flex-shrink: 0;
+  padding-top: 6px;
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+/* How many people it's for */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper output {
+  min-width: 26px;
+  text-align: center;
+}
+
+.stepper button {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid #d9a497;
+  border-radius: 50%;
+  background: var(--card);
+  font-family: var(--ui);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--title);
+  touch-action: manipulation;
+}
+
+.stepper button:hover:not(:disabled) {
+  background: #fdeeea;
+}
+
+/* Easier to hit with a thumb */
+.stepper button::after {
+  content: '';
+  position: absolute;
+  inset: -11px -6px;
+}
+
+.subhead {
+  font-family: var(--hand);
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--title);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Headings at the top of a page ---------- */
+.page-heading {
+  height: 104px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--title);
+}
+
+.page-heading h2 {
+  font-family: var(--script);
+  font-size: 54px;
+  line-height: 1;
+}
+
+.page-heading .deco {
+  width: 22px;
+  color: var(--blush);
+  transform: rotate(12deg);
+}
+
+.continued {
+  height: 52px;
+  line-height: 26px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.continued span {
+  font-family: var(--script);
+  font-size: 21px;
+  color: var(--title);
+}
+
+/* ---------- Contents, chapter lists and the index ---------- */
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 18px;
+  line-height: 26px;
+  text-decoration: none;
+}
+
+.entry:hover .entry__title {
+  color: var(--title);
+  text-decoration: underline;
+  text-decoration-color: var(--blush);
+  text-decoration-thickness: 3px;
+}
+
+.entry__title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.entry__dots {
+  flex: 1;
+  min-width: 14px;
+  border-bottom: 2px dotted #d9b9ad;
+}
+
+.entry__note {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.entry__number {
+  flex: 0 0 30px;
+  text-align: right;
+}
+
+.entry--chapter {
+  padding: 7px 0;
+  font-size: 20px;
+  align-items: center;
+}
+
+.entry--chapter .entry__dots {
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.entry__icon {
+  flex: 0 0 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 46% 52% 48%;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.columns {
+  display: flex;
+  gap: 26px;
+}
+
+.columns__column {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.columns .subhead {
+  font-family: var(--caps);
+  font-weight: 700;
+  font-size: 26px;
+}
+
+/* ---------- Recipe: the left-hand page ---------- */
+.page.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.intro__eyebrow {
+  color: var(--ink-soft);
+}
+
+.intro__title {
+  font-family: var(--script);
+  font-size: 56px;
+  line-height: 1.02;
+  color: var(--title);
+  margin: 2px 0 4px;
+  overflow-wrap: anywhere;
+}
+
+.intro__title--m {
+  font-size: 46px;
+}
+
+.intro__title--s {
+  font-size: 37px;
+}
+
+.intro__title--xs {
+  font-size: 30px;
+}
+
+/* The photo fills whatever space is left, keeping its shape */
+.print-area {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  /* Room above for the tape, so it never touches the recipe's name */
+  padding: 36px 0 8px;
+  container-type: size;
+  display: grid;
+  place-items: center;
+}
+
+.print {
+  --w: min(90cqw, calc((97cqh - 20px) * var(--ratio)));
+  position: relative;
+  width: var(--w);
+  aspect-ratio: var(--ratio);
+  box-sizing: content-box;
+  border: 10px solid #fffdf9;
+  background: #fffdf9;
+  transform: rotate(var(--tilt));
+  box-shadow:
+    0 1px 2px rgba(70, 40, 30, 0.28),
+    2px 6px 14px rgba(70, 40, 30, 0.2);
+}
+
+.print img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.print__blank {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #e0b9ac;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.7), transparent 60%),
+    linear-gradient(150deg, #fbe9e4, #f8eddc);
+  color: #85584b;
+  font-size: 20px;
+}
+
+/* Strips of washi tape */
+.washi {
+  position: absolute;
+  width: 104px;
+  height: 27px;
+  opacity: 0.88;
+  box-shadow: 0 1px 2px rgba(70, 40, 30, 0.18);
+  clip-path: polygon(
+    0 0,
+    3% 12%,
+    0 25%,
+    3% 38%,
+    0 50%,
+    3% 62%,
+    0 75%,
+    3% 88%,
+    0 100%,
+    100% 100%,
+    97% 88%,
+    100% 75%,
+    97% 62%,
+    100% 50%,
+    97% 38%,
+    100% 25%,
+    97% 12%,
+    100% 0
+  );
+}
+
+.washi--blush {
+  background: repeating-linear-gradient(135deg, #f2c4c8 0 8px, #f8dadc 8px 16px);
+}
+
+.washi--sage {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 2px, transparent 2.5px) 0 0 / 13px 13px,
+    #c3cdb0;
+}
+
+.washi--peach {
+  background:
+    linear-gradient(to bottom, transparent 40%, rgba(255, 255, 255, 0.65) 40% 60%, transparent 60%), #f8d3b8;
+}
+
+.washi--gold {
+  background: repeating-linear-gradient(90deg, #e6c988 0 5px, #f0dcab 5px 10px);
+}
+
+/* Blue gingham */
+.washi--blue {
+  background:
+    repeating-linear-gradient(90deg, rgba(94, 138, 184, 0.5) 0 5px, transparent 5px 10px),
+    repeating-linear-gradient(0deg, rgba(94, 138, 184, 0.5) 0 5px, transparent 5px 10px), #eaf2f9;
+}
+
+.print__tape {
+  top: -14px;
+  right: -36px;
+  width: 88px;
+  height: 24px;
+  transform: rotate(34deg);
+}
+
+.print__tape--left {
+  right: auto;
+  left: -36px;
+  transform: rotate(-34deg);
+}
+
+.facts {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+  border-top: 2px solid var(--blush);
+  border-bottom: 2px solid var(--blush);
+}
+
+.facts > div {
+  flex: 1 1 auto;
+  padding: 5px 5px 6px;
+}
+
+.facts > div + div {
+  border-left: 2px dotted var(--blush);
+}
+
+.facts dt {
+  font-size: 15px;
+  line-height: 18px;
+  color: var(--ink-soft);
+}
+
+.facts dd {
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+/* The dot-in-a-square used on food packets in India */
+.diet-mark {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  border: 1.5px solid #9c4a2f;
+  border-radius: 2px;
+  background: radial-gradient(circle, #9c4a2f 3.2px, transparent 3.7px);
+}
+
+.diet-mark--green {
+  border-color: #4c7a3d;
+  background: radial-gradient(circle, #4c7a3d 3.2px, transparent 3.7px);
+}
+
+.intro__tags {
+  width: 100%;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-spacing: 0.3em;
+}
+
+.intro__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ---------- Margin decorations ---------- */
+.margin-decor {
+  pointer-events: none;
+}
+
+.deco {
+  display: block;
+}
+
+.gingham {
+  top: 0;
+  left: 0;
+  width: 92px;
+  height: 92px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  background:
+    linear-gradient(90deg, rgba(226, 138, 146, 0.45) 50%, transparent 50%) 0 0 / 16px 16px,
+    linear-gradient(0deg, rgba(226, 138, 146, 0.45) 50%, transparent 50%) 0 0 / 16px 16px,
+    #fff6f3;
+}
+
+.flip-page__inner--right .gingham,
+.flip-page__inner--single .gingham {
+  left: auto;
+  right: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.margin-decor--hearts,
+.margin-decor--sparkles {
+  top: 30px;
+  left: 26px;
+  width: 60px;
+  height: 80px;
+}
+
+.flip-page__inner--right .margin-decor:not(.gingham) {
+  left: auto;
+  right: 26px;
+}
+
+.margin-decor .deco {
+  position: absolute;
+}
+
+.margin-decor--hearts .deco {
+  color: var(--blush);
+}
+
+.margin-decor--sparkles .deco {
+  color: var(--gold);
+}
+
+.margin-decor .deco:nth-child(1) {
+  width: 22px;
+  left: 4px;
+  top: 2px;
+  transform: rotate(-14deg);
+}
+
+.margin-decor .deco:nth-child(2) {
+  width: 13px;
+  left: 32px;
+  top: 24px;
+  transform: rotate(16deg);
+}
+
+.margin-decor .deco:nth-child(3) {
+  width: 9px;
+  left: 14px;
+  top: 40px;
+}
+
+/* ---------- Covers ---------- */
+.page.cloth {
+  background: url('/textures/cloth.webp'), var(--cover);
+  background-blend-mode: soft-light;
+}
+
+.page.cloth::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 240, 225, 0.22),
+    rgba(255, 240, 225, 0) 45%,
+    rgba(60, 15, 8, 0.2)
+  );
+  pointer-events: none;
+}
+
+.page.cover {
+  padding: 0 30px 0 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+  color: var(--foil);
+  cursor: pointer;
+}
+
+.cover__frame {
+  inset: 34px 30px 34px 52px;
+  border: 2px solid var(--foil);
+  border-radius: 10px;
+  opacity: 0.75;
+}
+
+.cover__frame::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--foil);
+  border-radius: 6px;
+}
+
+/* Foil catches the light, and is pressed slightly into the cloth */
+.cover__title {
+  font-family: var(--script);
+  font-size: 84px;
+  line-height: 0.95;
+  max-width: 360px;
+  padding: 6px 8px;
+  background: linear-gradient(
+    115deg,
+    var(--foil) 20%,
+    #fffaf0 42%,
+    var(--foil) 58%,
+    color-mix(in srgb, var(--foil) 78%, #8a5a20) 90%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 -1px 0 rgba(70, 20, 10, 0.45)) drop-shadow(0 1px 0 rgba(255, 235, 215, 0.25));
+}
+
+.cover__motif {
+  width: 104px;
+  filter: drop-shadow(0 -1px 0 rgba(70, 20, 10, 0.45));
+}
+
+.cover__subtitle {
+  font-family: var(--hand);
+  font-size: 25px;
+  line-height: 1.25;
+  max-width: 340px;
+}
+
+.page > .cover__author {
+  position: absolute;
+  left: 52px;
+  right: 30px;
+  bottom: 62px;
+  font-family: var(--script);
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.page.cover--back {
+  padding: 0 44px 0 30px;
+  cursor: auto;
+}
+
+.cover--back .cover__frame {
+  inset: 34px 52px 34px 30px;
+}
+
+.cover--back .deco {
+  width: 34px;
+}
+
+.cover__again {
+  padding: 8px 12px;
+  z-index: 1;
+  font-size: 19px;
+  color: var(--foil);
+}
+
+/* ---------- Inside the cover ---------- */
+.page.endpaper {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(90deg, rgba(236, 160, 166, 0.3) 50%, transparent 50%) 0 0 / 34px 34px,
+    linear-gradient(0deg, rgba(236, 160, 166, 0.3) 50%, transparent 50%) 0 0 / 34px 34px,
+    #fff5f2;
+  background-blend-mode: normal;
+}
+
+.dedication {
+  position: relative;
+  width: 330px;
+  max-width: 100%;
+  padding: 52px 36px 34px;
+  background: url('/textures/paper.webp'), var(--paper);
+  background-blend-mode: multiply;
+  box-shadow: 1px 4px 12px rgba(90, 45, 35, 0.22);
+  transform: rotate(-1.2deg);
+  text-align: center;
+  font-size: 23px;
+  line-height: 34px;
+}
+
+.dedication .deco {
+  width: 22px;
+  margin: 20px auto 0;
+  color: #e09aa2;
+}
+
+.dedication__tape {
+  top: -13px;
+  left: calc(50% - 52px);
+  transform: rotate(2deg);
+}
+
+/* ---------- Chapter divider ---------- */
+.page.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.divider__wash {
+  inset: 14px 8px;
+  opacity: 0.8;
+  mask: url('/textures/wash-page.webp') center / 100% 100% no-repeat;
+  -webkit-mask: url('/textures/wash-page.webp') center / 100% 100% no-repeat;
+}
+
+.divider__icon {
+  font-size: 46px;
+  line-height: 1.2;
+}
+
+.divider__name {
+  font-family: var(--caps);
+  font-weight: 700;
+  font-size: 100px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #4a2114;
+}
+
+.divider__name--long {
+  font-size: 66px;
+}
+
+.divider__blurb {
+  font-size: 22px;
+  line-height: 28px;
+  max-width: 320px;
+}
+
+.divider__count {
+  margin-top: 8px;
+  padding: 4px 18px;
+  background: rgba(255, 252, 246, 0.82);
+  border-radius: 2px;
+  transform: rotate(-1.5deg);
+  font-size: 20px;
+}

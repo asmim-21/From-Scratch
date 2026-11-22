@@ -1,0 +1,56 @@
+# The chapters of the book, in order.
+# To add one, copy an entry and change the words. Nothing else to edit.
+#
+#   name     what recipes put in `cuisine:`
+#   color    the divider and tab colour, as a hex code in quotes
+#   icon     an emoji
+#   tab      optional short word for the coloured tab (14 letters at most)
+#   blurb    optional line under the chapter name
+#   regions  optional sub-regions. A recipe can use one of these as its cuisine
+#            ("cuisine: Bengali") and it lands in this chapter.
+
+- name: "Indian"
+  color: "#d98a5b"
+  icon: "🌶️"
+  blurb: "straight from the streets of Delhi"
+  regions: ["North Indian", "South Indian", "Bengali", "Street Food", "Indo-Chinese"]
+
+- name: "Italian"
+  color: "#c9675c"
+  icon: "🍅"
+  blurb: "good cheese, good tomatoes, good oil, not much else"
+
+- name: "Asian"
+  color: "#e0a3a8"
+  icon: "🍜"
+  blurb: "noodles, rice bowls and things to dip"
+  regions: ["Chinese", "Japanese", "Thai", "Korean", "Vietnamese"]
+
+- name: "Middle Eastern & Mediterranean"
+  tab: "Mediterranean"
+  color: "#9aa77f"
+  icon: "🫒"
+  blurb: "mezze, flatbreads and lots of lemon"
+
+- name: "Mexican & Latin"
+  tab: "Mexican"
+  color: "#e8b48a"
+  icon: "🌽"
+  blurb: "lime, smoke and corn"
+
+- name: "Everyday & Western"
+  tab: "Everyday"
+  color: "#d8b765"
+  icon: "🍳"
+  blurb: "breakfasts, sandwiches, salads, simple dinners"
+
+- name: "Baking & Desserts"
+  tab: "Baking"
+  color: "#d9929f"
+  icon: "🧁"
+  blurb: "butter, sugar, patience"
+
+- name: "Drinks"
+  color: "#b98f72"
+  icon: "☕"
+  blurb: "chai, coffees, smoothies, lattes, cocktails and more"
